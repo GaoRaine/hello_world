@@ -18,3 +18,19 @@ knitr::opts_chunk$set(echo = TRUE)
 df=readRDS("DATA/wk2_stocks.rds")
 str(df)
 ```
+## statistics on returns
+
++ The cumulative returns of the S&P index during this period is `r round(sum(df$SPY_returns)*100,2)` %.
++ The average daily returns of the S&P index during this period is `r round(mean(df$SPY_returns)*100,2)` %.
++ The standard deviation of the daily returns of the S&P index during this period is`r round(sd(df$SPY_returns)*100,2)` %.
+
+## s&&p prices
+```{r message=FALSE}
+library(tidyverse)
+ggplot(data=df,aes(x=date,y=SPY_prices))+geom_line()
+
+```
+```{r}
+df%>% mutate (year=year(date))%>%filter(year<2023)%>%group_by(year)%>%summarize(yearly_return=round(sum(SPY_returns)*100,2))%>%ggplot(aes(x=year,y=yearly_return))+geom_col()
+
+```
